@@ -1,7 +1,8 @@
 """
 Tests for CLI parsers
 """
-from os import mkdir, path, rmdir
+from argparse import Namespace
+from os import mkdir, path, rmdir, remove
 from sys import version_info
 from tempfile import gettempdir
 from unittest import TestCase
@@ -26,7 +27,7 @@ class TestCli(TestCase):
 
     def test_file_not_found(self):
         """
-        Tests whether the CLI parsers return a collection with first element being `ArgumentParser`
+        Tests whether the right error is raised when file is not found
         """
         temp_dir = path.join(gettempdir(), "test_file_not_found")
         mkdir(temp_dir)
@@ -37,6 +38,7 @@ class TestCli(TestCase):
                 "sys.stderr", sio
             ), self.assertRaises(SystemExit) as e:
                 main(cli_argv=["-r", temp_file], return_args=True)
+
             self.assertEqual(e.exception.code, 2)
             sio.seek(0)
             self.assertTrue(
@@ -47,6 +49,23 @@ class TestCli(TestCase):
                 )
             )
         finally:
+            rmdir(temp_dir)
+
+
+    def test_file_found(self):
+        """
+        Tests whether the `Namespace` is set properly when file exists
+        """
+        temp_dir = path.join(gettempdir(), "test_file_found")
+        mkdir(temp_dir)
+        temp_file = path.join(temp_dir, "a")
+        open(temp_file, "a").close()
+        try:
+            main_resp = main(cli_argv=["-r", temp_file], return_args=True)
+            self.assertIsInstance(main_resp, Namespace)
+            self.assertListEqual(main_resp.file, [temp_file])
+        finally:
+            remove(temp_file)
             rmdir(temp_dir)
 
 

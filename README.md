@@ -8,7 +8,7 @@ GHAPI-conversion
 [![codecov](https://codecov.io/gh/offscale/GHAPI-conversion/branch/master/graph/badge.svg)](https://codecov.io/gh/offscale/GHAPI-conversion)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)
-[![PyPi: release](https://img.shields.io/pypi/v/GHAPI-conversion.svg?maxAge=3600)](https://pypi.org/project/GHAPI-conversion)
+[![PyPi: release](https://img.shields.io/pypi/v/ghapi-conversion.svg?maxAge=3600)](https://pypi.org/project/ghapi-conversion)
 
 CLI to replace HTTP GET on GitHub API with clones.
 
@@ -27,7 +27,7 @@ Additionally, it reuses already cloned repos.
 
 ### PyPi
 
-    pip install GHAPI-conversion
+    pip install ghapi-conversion
 
 ## Development
 

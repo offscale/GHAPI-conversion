@@ -14,10 +14,14 @@ from sys import version_info
 from setuptools import find_packages, setup
 
 if version_info[0] == 2:
+    from codecs import open
     from itertools import ifilter as filter
     from itertools import imap as map
 
 package_name = "ghapi_conversion"
+
+with open("README.md", "r", encoding="utf-8") as fh:
+    long_description = fh.read()
 
 
 def to_funcs(*paths):
@@ -56,6 +60,9 @@ def main():
         name=package_name,
         author=__author__,
         version=__version__,
+        description="CLI to replace HTTP GET on GitHub API with clones",
+        long_description=long_description,
+        long_description_content_type="text/markdown",
         install_requires=["pyyaml"],
         test_suite=package_name + ".tests",
         packages=find_packages(),

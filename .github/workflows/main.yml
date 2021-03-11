@@ -15,7 +15,7 @@ jobs:
         runs-on: ${{ matrix.os.runs-on }}
         strategy:
             matrix:
-                python-version: [2.7, 3.5, 3.6, 3.7, 3.8, 3.9]
+                python-version: [2.7, 3.0, 3.1, 3.2, 3.3, 3.4, 3.5, 3.6, 3.7, 3.8, 3.9, '3.10.0-alpha - 3.10.0']
                 os:
                     -   name: Linux
                         runs-on: ubuntu-latest
@@ -43,7 +43,7 @@ jobs:
             -   name: Lint with flake8
                 run: |
                     pip install flake8
-                    flake8 . --count --select=$(printf '%s,' {A..Z}) --ignore='W503,E203' --show-source --max-complexity=13 --max-line-length=119 --exclude 'ml_params_tensorflow/ml_params/losses.py,ml_params_tensorflow/ml_params/metrics.py' --statistics
+                    flake8 . --count --select=$(printf '%s,' {A..Z}) --ignore='W503,E203' --show-source --max-complexity=13 --max-line-length=119 --statistics
                 if: matrix.python-version == '3.8' && matrix.os.name == 'Linux'
             -   name: Doc coverage
                 run: |

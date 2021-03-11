@@ -27,7 +27,9 @@ def up_clone(url, clone_parent_dir=environ.get("CLONE_PARENT_DIR", gettempdir())
     :rtype: ```Tuple[str, Optional[str]]```
     """
     u = urlparse(url.replace("api.github.com/repos", "github.com"))
-    ball_idx = (lambda idx: idx if idx > -1 else u.path.rfind("/tarball"))(u.path.rfind("/zipball"))
+    ball_idx = (lambda idx: idx if idx > -1 else u.path.rfind("/tarball"))(
+        u.path.rfind("/zipball")
+    )
     p = u.path[:ball_idx] if ball_idx > -1 else "/".join(u.path.split("/")[:3])
     target_dir = path.join(clone_parent_dir, p[p.rfind("/") + 1 :])
     if not path.isdir(target_dir):

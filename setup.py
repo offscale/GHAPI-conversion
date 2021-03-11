@@ -12,8 +12,11 @@ from os import listdir, path
 from sys import version_info
 
 from setuptools import find_packages, setup
+
 if version_info[0] == 2:
-    from itertools import imap as map, ifilter as filter
+    from itertools import ifilter as filter
+    from itertools import imap as map
+
 package_name = "ghapi_conversion"
 
 

@@ -1,15 +1,15 @@
 #!/usr/bin/env python
 
 """
-`__main__` implementation, can be run directly or with `python -m pip_req_cloner`
+`__main__` implementation, can be run directly or with `python -m ghapi_conversion`
 """
 from argparse import ArgumentParser
 from collections import deque
 from itertools import filterfalse
 from os import path
 
-from pip_req_cloner import __description__, __version__
-from pip_req_cloner.utils import clone_install_pip, rpartial
+from ghapi_conversion import __description__, __version__
+from ghapi_conversion.utils import clone_install_pip, rpartial
 
 
 def _build_parser():

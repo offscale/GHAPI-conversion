@@ -3,7 +3,7 @@ Tests for CLI parsers
 """
 from unittest import TestCase
 
-from pip_req_cloner.tests.utils_for_tests import unittest_main
+from ghapi_conversion.tests.utils_for_tests import unittest_main
 
 
 class TestCli(TestCase):

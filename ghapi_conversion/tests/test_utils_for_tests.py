@@ -5,7 +5,7 @@ from io import StringIO
 from unittest import TestCase
 from unittest.mock import MagicMock, patch
 
-from pip_req_cloner.tests.utils_for_tests import unittest_main
+from ghapi_conversion.tests.utils_for_tests import unittest_main
 
 
 class TestUtilsForTests(TestCase):
@@ -20,16 +20,16 @@ class TestUtilsForTests(TestCase):
         self.assertEqual(type(unittest_main).__name__, "function")
         self.assertIsNone(unittest_main())
         argparse_mock = MagicMock()
-        with patch("pip_req_cloner.tests.utils_for_tests.__name__", "__main__"), patch(
+        with patch("ghapi_conversion.tests.utils_for_tests.__name__", "__main__"), patch(
             "sys.stderr", new_callable=StringIO
         ), self.assertRaises(SystemExit) as e:
-            import pip_req_cloner.tests.utils_for_tests
+            import ghapi_conversion.tests.utils_for_tests
 
-            pip_req_cloner.tests.utils_for_tests.unittest_main()
+            ghapi_conversion.tests.utils_for_tests.unittest_main()
 
         self.assertIsInstance(e.exception.code, bool)
         self.assertIsNone(argparse_mock.call_args)
-        self.assertIsNone(pip_req_cloner.tests.utils_for_tests.unittest_main())
+        self.assertIsNone(ghapi_conversion.tests.utils_for_tests.unittest_main())
 
 
 unittest_main()

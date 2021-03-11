@@ -9,10 +9,12 @@ from ast import parse
 from distutils.sysconfig import get_python_lib
 from functools import partial
 from os import listdir, path
+from sys import version_info
 
 from setuptools import find_packages, setup
-
-package_name = "pip_req_cloner"
+if version_info[0] == 2:
+    from itertools import imap as map, ifilter as filter
+package_name = "ghapi_conversion"
 
 
 def to_funcs(*paths):

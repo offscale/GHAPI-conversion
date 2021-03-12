@@ -35,13 +35,11 @@ class TestUtilsForTests(TestCase):
         ), patch("sys.stderr", new_callable=StringIO), self.assertRaises(
             SystemExit
         ) as e:
-            import ghapi_conversion.tests.utils_for_tests
-
-            ghapi_conversion.tests.utils_for_tests.unittest_main()
+            unittest_main()
 
         self.assertIsInstance(e.exception.code, bool)
         self.assertIsNone(argparse_mock.call_args)
-        self.assertIsNone(ghapi_conversion.tests.utils_for_tests.unittest_main())
+        self.assertIsNone(unittest_main())
 
 
 unittest_main()

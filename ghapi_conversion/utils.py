@@ -2,7 +2,7 @@
 """
 Utility functions
 """
-
+from itertools import chain
 from os import environ, path
 from subprocess import call
 from sys import version_info
@@ -14,12 +14,17 @@ else:
     from urllib.parse import urlparse
 
 
-def up_clone(url, clone_parent_dir=environ.get("CLONE_PARENT_DIR", gettempdir())):
+def up_clone(
+    url, branch="master", clone_parent_dir=environ.get("CLONE_PARENT_DIR", gettempdir())
+):
     """
     Clone if not present else reuse
 
     :param url: URL
     :type url: ```str```
+
+    :param branch: Branch name
+    :type branch: ```str```
 
     :param clone_parent_dir: Parent directory to clone everything from
     :type clone_parent_dir: ```str```
@@ -35,13 +40,22 @@ def up_clone(url, clone_parent_dir=environ.get("CLONE_PARENT_DIR", gettempdir())
     target_dir = path.join(clone_parent_dir, p[p.rfind("/") + 1 :])
     if not path.isdir(target_dir):
         call(
-            [
-                "git",
-                "clone",
-                "--depth=1",
-                "{u.scheme}://{u.netloc}{p}".format(u=u, p=p),
-                target_dir,
-            ]
+            list(
+                chain.from_iterable(
+                    (
+                        (
+                            "git",
+                            "clone",
+                            "--depth=1",
+                        ),
+                        iter(()) if branch == "master" else ("-b", branch),
+                        (
+                            "{u.scheme}://{u.netloc}{p}".format(u=u, p=p),
+                            target_dir,
+                        ),
+                    )
+                )
+            )
         )
     return target_dir, u.path[u.path.rfind("/") + 1 :].rstrip()
 
@@ -60,7 +74,23 @@ def clone_install_pip(pip_req_file):
         if req.startswith("http:") or req.startswith("https:"):
             call(["pip", "install", "."], cwd=up_clone(req)[0])
         elif req.startswith("-r"):
-            clone_install_pip(path.join(*up_clone(req[2:].lstrip())))
+            route = req[req.find("/", req.find(".")) :]
+            offset, parts = 1, []
+            for _ in range(3):
+                next_slash = route.find("/", offset)
+                parts.append(route[offset:next_slash])
+                offset = next_slash + 1
+            org, repo, branch = parts
+            filepath = route[offset:]
+            clone_install_pip(
+                path.join(
+                    up_clone(
+                        "https://github.com/{org}/{repo}".format(org=org, repo=repo),
+                        branch=branch,
+                    )[0],
+                    filepath,
+                )
+            )
         else:
             call(["pip", "install", req])
 

@@ -5,7 +5,7 @@ Tests for utils for tests
 from sys import version_info
 from unittest import TestCase
 
-from ghapi_conversion.tests.utils_for_tests import unittest_main
+from ghapi_conversion.tests import utils_for_tests
 
 if version_info[0] == 2:
     from mock import MagicMock, patch
@@ -22,9 +22,8 @@ class TestUtilsForTests(TestCase):
         """
         Tests whether `unittest_main` is called when `__name__ == '__main__'`
         """
-        self.assertEqual(type(unittest_main).__name__, "function")
+        self.assertEqual(type(utils_for_tests.unittest_main).__name__, "function")
         argparse_mock, main_mock = MagicMock(), MagicMock()
-        from ghapi_conversion.tests import utils_for_tests
 
         with patch.object(utils_for_tests, "__name__", "__main__"), patch.object(
             utils_for_tests, "main", main_mock
@@ -35,4 +34,4 @@ class TestUtilsForTests(TestCase):
         self.assertIsNone(argparse_mock.call_args)
 
 
-unittest_main()
+utils_for_tests.unittest_main()

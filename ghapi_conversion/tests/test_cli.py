@@ -75,14 +75,16 @@ class TestCli(TestCase):
         Tests whether the `clone_install_pip` is called the right number of times
         """
 
-        def clone_install_pip(arg):
+        def clone_install_pip(pip_req_file):
             """
             Fake function for counting
 
-            :param arg: Anything
-            :type arg: ```Any```
+            :param pip_req_file: Filename where requirements are. Force created if not present.
+            :type pip_req_file: ```str```
             """
             clone_install_pip.called += 1
+            # if not path.isfile(pip_req_file):
+            #     directory = path.dirname(path.dirname(pip_req_file))
 
         clone_install_pip.called = 0
 

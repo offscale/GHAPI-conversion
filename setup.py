@@ -6,6 +6,7 @@ setup.py implementation, interesting because it parsed the first __init__.py and
 """
 
 from ast import parse
+from codecs import open
 from distutils.sysconfig import get_python_lib
 from functools import partial
 from os import listdir, path
@@ -14,7 +15,6 @@ from sys import version_info
 from setuptools import find_packages, setup
 
 if version_info[0] == 2:
-    from codecs import open
     from itertools import ifilter as filter
     from itertools import imap as map
 

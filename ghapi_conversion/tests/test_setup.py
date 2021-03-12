@@ -23,7 +23,7 @@ class TestSetupPy(TestCase):
     """
 
     @classmethod
-    def setUpClass(cls) -> None:
+    def setUpClass(cls):
         """ Construct the setup_py module """
         cls.mod = cls.import_setup_py()
 
@@ -44,14 +44,14 @@ class TestSetupPy(TestCase):
         loader.exec_module(modules[modname])
         return modules[modname]
 
-    def test_properties(self) -> None:
+    def test_properties(self):
         """
         Tests whether 'setup.py' has correct properties
         """
         self.assertEqual(getattr(self.mod, "package_name"), "ghapi_conversion")
         self.assertEqual(self.mod.__name__, "setup_py")
 
-    def test_to_funcs(self) -> None:
+    def test_to_funcs(self):
         """ Tests that `to_funcs` produces the right local and install dirs """
         to_funcs = getattr(self.mod, "to_funcs")
         args = "5", "6"
@@ -64,14 +64,14 @@ class TestSetupPy(TestCase):
             path.join(path.dirname(path.dirname(__file__)), *args),
         )
 
-    def test_main(self) -> None:
+    def test_main(self):
         """
         Tests that no errors occur in `main` function call (up to `setup()`, which is tested in setuptools)
         """
         with patch("setup_py.setup", mock_function):
             self.assertIsNone(self.mod.main())
 
-    def test_setup_py_main(self) -> None:
+    def test_setup_py_main(self):
         """
         Tests that `__name__ == __main__` calls the `main` function via `setup_py_main` call
         """

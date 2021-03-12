@@ -8,10 +8,10 @@ from os import path
 from sys import modules, version_info
 from unittest import TestCase
 
-if version_info[0] == 3:
-    from unittest.mock import patch
-else:
+if version_info[0] == 2:
     from mock import patch
+else:
+    from unittest.mock import patch
 
 from ghapi_conversion.tests.utils_for_tests import mock_function, unittest_main
 

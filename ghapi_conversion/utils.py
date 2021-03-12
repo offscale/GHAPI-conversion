@@ -7,10 +7,10 @@ from subprocess import call
 from sys import version_info
 from tempfile import gettempdir
 
-if version_info[0] == 3:
-    from urllib.parse import urlparse
-else:
+if version_info[0] == 2:
     from urlparse import urlparse
+else:
+    from urllib.parse import urlparse
 
 
 def up_clone(url, clone_parent_dir=environ.get("CLONE_PARENT_DIR", gettempdir())):

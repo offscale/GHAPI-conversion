@@ -5,11 +5,16 @@
 """
 from argparse import ArgumentParser
 from collections import deque
-from itertools import filterfalse
 from os import path
+from sys import version_info
 
 from ghapi_conversion import __description__, __version__
 from ghapi_conversion.utils import clone_install_pip, rpartial
+
+if version_info[0] == 2:
+    from itertools import ifilterfalse as filterfalse
+else:
+    from itertools import filterfalse
 
 
 def _build_parser():

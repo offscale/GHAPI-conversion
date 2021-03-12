@@ -5,9 +5,13 @@ from importlib.machinery import SourceFileLoader
 from importlib.util import module_from_spec, spec_from_loader
 from operator import methodcaller
 from os import path
-from sys import modules
+from sys import modules, version_info
 from unittest import TestCase
-from unittest.mock import patch
+
+if version_info[0] == 3:
+    from unittest.mock import patch
+else:
+    from mock import patch
 
 from ghapi_conversion.tests.utils_for_tests import mock_function, unittest_main
 

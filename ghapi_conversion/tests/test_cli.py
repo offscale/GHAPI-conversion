@@ -6,18 +6,20 @@ from os import mkdir, path, remove, rmdir
 from sys import version_info
 from tempfile import gettempdir
 from unittest import TestCase
-from unittest.mock import patch
 
 from ghapi_conversion.__main__ import main
 from ghapi_conversion.tests.utils_for_tests import unittest_main
 
 if version_info[0] == 2:
+    from mock import patch
+
     try:
         from cStringIO import StringIO
     except ImportError:
         from StringIO import StringIO
 else:
     from io import StringIO
+    from unittest.mock import patch
 
 
 class TestCli(TestCase):

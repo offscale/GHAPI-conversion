@@ -3,7 +3,6 @@ Tests for utils for tests
 """
 from sys import version_info
 from unittest import TestCase
-from unittest.mock import MagicMock, patch
 
 from ghapi_conversion.tests.utils_for_tests import unittest_main
 
@@ -12,8 +11,10 @@ if version_info[0] == 2:
         from cStringIO import StringIO
     except ImportError:
         from StringIO import StringIO
+    from mock import MagicMock, patch
 else:
     from io import StringIO
+    from unittest.mock import MagicMock, patch
 
 
 class TestUtilsForTests(TestCase):

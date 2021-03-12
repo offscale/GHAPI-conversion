@@ -62,6 +62,7 @@ class TestUtils(TestCase):
         self.assertEqual(type(unittest_main).__name__, "function")
 
         def call_mock(*args, **kwargs):
+            """ Mock `subprocess.call` function that does more than a `MagicMock` """
             call_mock.call_count += 1
             call_mock.call_args.append([args, kwargs])
             if args and args[0][:2] == ["git", "clone"]:

@@ -20,7 +20,7 @@ if version_info[0] == 2:
 
 package_name = "ghapi_conversion"
 
-with open("README.md", "r", encoding="utf-8") as fh:
+with open(path.join(path.dirname(__file__), "README.md"), "r", encoding="utf-8") as fh:
     long_description = fh.read()
 
 

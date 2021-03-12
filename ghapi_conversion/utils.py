@@ -70,7 +70,4 @@ def rpartial(func, *args):
     return lambda *a: func(*(a + args))
 
 
-if __name__ == "__main__":
-    clone_install_pip("requirements.txt")
-
 __all__ = ["clone_install_pip", "rpartial"]

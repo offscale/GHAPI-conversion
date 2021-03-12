@@ -11,4 +11,14 @@ def unittest_main():
         main()
 
 
+def mock_function(*args, **kwargs):
+    """
+    Mock function to check if it is called
+
+    :returns: True
+    :rtype: ```Literal[True]```
+    """
+    return True
+
+
 __all__ = ["unittest_main"]

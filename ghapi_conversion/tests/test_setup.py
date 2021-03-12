@@ -2,32 +2,36 @@
 """
 Tests for setup.py
 """
-from importlib.machinery import SourceFileLoader
-from importlib.util import module_from_spec, spec_from_loader
 from operator import methodcaller
 from os import path
 from sys import modules, version_info
 from unittest import TestCase
 
 if version_info[0] == 2:
+    from imp import load_source
+
     from mock import patch
+
+    def import_setup_py():
+        """
+        Function which imports setup.py as a module
+
+        :returns: setup.py as a module
+        :rtype: ```Union[module, ModuleSpec]```
+        """
+        modname = "setup_py"
+        modules[modname] = load_source(
+            modname,
+            path.join(path.dirname(path.dirname(path.dirname(__file__))), "setup.py"),
+        )
+        return modules[modname]
+
+
 else:
+    from importlib.machinery import SourceFileLoader
+    from importlib.util import module_from_spec, spec_from_loader
     from unittest.mock import patch
 
-from ghapi_conversion.tests.utils_for_tests import mock_function, unittest_main
-
-
-class TestSetupPy(TestCase):
-    """
-    Tests whether docstrings are parsed out—and emitted—correctly
-    """
-
-    @classmethod
-    def setUpClass(cls):
-        """ Construct the setup_py module """
-        cls.mod = cls.import_setup_py()
-
-    @staticmethod
     def import_setup_py():
         """
         Function which imports setup.py as a module
@@ -43,6 +47,20 @@ class TestSetupPy(TestCase):
         modules[modname] = module_from_spec(spec_from_loader(loader.name, loader))
         loader.exec_module(modules[modname])
         return modules[modname]
+
+
+from ghapi_conversion.tests.utils_for_tests import mock_function, unittest_main
+
+
+class TestSetupPy(TestCase):
+    """
+    Tests whether docstrings are parsed out—and emitted—correctly
+    """
+
+    @classmethod
+    def setUpClass(cls):
+        """ Construct the setup_py module """
+        cls.mod = import_setup_py()
 
     def test_properties(self):
         """

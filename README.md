@@ -34,6 +34,7 @@ Additionally, it reuses already cloned repos.
 ### Install dependencies
 
     pip install -r requirements.txt
+    # On Python 2.7, `pip install mock` in order to run the tests without error
 
 ### Install package
 

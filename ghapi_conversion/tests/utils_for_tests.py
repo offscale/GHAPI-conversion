@@ -22,4 +22,4 @@ def mock_function(*args, **kwargs):
     return True
 
 
-__all__ = ["unittest_main"]
+__all__ = ["mock_function", "unittest_main"]

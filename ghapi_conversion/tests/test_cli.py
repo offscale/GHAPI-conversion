@@ -2,7 +2,7 @@
 Tests for CLI parsers
 """
 from argparse import Namespace
-from os import mkdir, path, rmdir, remove
+from os import mkdir, path, remove, rmdir
 from sys import version_info
 from tempfile import gettempdir
 from unittest import TestCase
@@ -51,7 +51,6 @@ class TestCli(TestCase):
         finally:
             rmdir(temp_dir)
 
-
     def test_file_found(self):
         """
         Tests whether the `Namespace` is set properly when file exists
@@ -64,6 +63,36 @@ class TestCli(TestCase):
             main_resp = main(cli_argv=["-r", temp_file], return_args=True)
             self.assertIsInstance(main_resp, Namespace)
             self.assertListEqual(main_resp.file, [temp_file])
+        finally:
+            remove(temp_file)
+            rmdir(temp_dir)
+
+    def test_clone_install_pip_called(self):
+        """
+        Tests whether the `clone_install_pip` is called the right number of times
+        """
+
+        def clone_install_pip(arg):
+            """
+            Fake function for counting
+
+            :param arg: Anything
+            :type arg: ```Any```
+            """
+            clone_install_pip.called += 1
+
+        clone_install_pip.called = 0
+
+        temp_dir = path.join(gettempdir(), "test_clone_install_pip_called")
+        mkdir(temp_dir)
+        temp_file = path.join(temp_dir, "a")
+        open(temp_file, "a").close()
+        try:
+            with patch(
+                "ghapi_conversion.__main__.clone_install_pip", clone_install_pip
+            ):
+                main(cli_argv=["-r", temp_file])
+            self.assertEqual(1, clone_install_pip.called)
         finally:
             remove(temp_file)
             rmdir(temp_dir)

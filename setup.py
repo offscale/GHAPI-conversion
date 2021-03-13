@@ -63,7 +63,6 @@ def main():
         description="CLI to replace HTTP GET on GitHub API with clones",
         long_description=long_description,
         long_description_content_type="text/markdown",
-        install_requires=["pyyaml"],
         test_suite=package_name + ".tests",
         packages=find_packages(),
         package_dir={package_name: package_name},
@@ -85,10 +84,7 @@ def main():
             "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: Implementation",
             "Topic :: Software Development",
-        ],
-        data_files=[
-            (_data_install_dir(), list(map(_data_join, listdir(_data_join()))))
-        ],
+        ]
     )
 
 

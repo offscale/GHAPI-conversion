@@ -4,7 +4,7 @@ GHAPI-conversion
 [![License](https://img.shields.io/badge/license-CC0-blue.svg)](https://creativecommons.org/publicdomain/zero/1.0)
 [![Linting, testing, coverage, and release](https://github.com/offscale/GHAPI-conversion/workflows/Linting,%20testing,%20coverage,%20and%20release/badge.svg)](https://github.com/offscale/GHAPI-conversion/actions)
 ![Tested OSs, others may work](https://img.shields.io/badge/Tested%20on-Linux%20|%20macOS%20|%20Windows-green)
-![Documentation coverage](.github/doccoverage.svg)
+![Documentation coverage](https://raw.githubusercontent.com/offscale/GHAPI-conversion/master/.github/doccoverage.svg)
 [![codecov](https://codecov.io/gh/offscale/GHAPI-conversion/branch/master/graph/badge.svg)](https://codecov.io/gh/offscale/GHAPI-conversion)
 [![Code style: black](https://img.shields.io/badge/code%20style-black-000000.svg)](https://github.com/psf/black)
 [![Imports: isort](https://img.shields.io/badge/%20imports-isort-%231674b1?style=flat&labelColor=ef8336)](https://pycqa.github.io/isort/)

@@ -4,7 +4,7 @@ Tests for utils
 """
 from codecs import open
 from collections import deque
-from os import mkdir, path, remove, rmdir
+from os import mkdir, path, remove, rmdir, environ
 from sys import version_info
 from tempfile import gettempdir
 from unittest import TestCase, skip
@@ -54,7 +54,6 @@ class TestUtils(TestCase):
             call_mock.call_args[1]["cwd"], path.join(path.dirname(temp_dir), "<repo>")
         )
 
-    @skip("TODO")
     def test_clone_install_req(self):
         """
         Tests whether `unittest_main` is called when `__name__ == '__main__'`
@@ -68,8 +67,8 @@ class TestUtils(TestCase):
             if args and args[0][:2] == ["git", "clone"]:
                 mkdir(args[0][-1])
                 created_dirs.append(path.dirname(args[0][-1]))
-                open(args[0][-1], "a").close()
-                created_files.append(args[0][-1])
+                # open(args[0][-1], "a").close()
+                # created_files.append(args[0][-1])
 
         call_mock.call_count = 0
         call_mock.call_args = []
@@ -84,7 +83,7 @@ class TestUtils(TestCase):
                     "-r https://raw.githubusercontent.com/<org>/<repo1>/<branch>/<file>",
                 )
             with patch.object(utils, "call", call_mock):
-                utils.clone_install_pip(temp_file)
+                utils.clone_install_pip(temp_file, clone_parent_dir=temp_dir)
 
         finally:
             deque(map(remove, created_files), maxlen=0)

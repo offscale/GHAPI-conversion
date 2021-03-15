@@ -9,7 +9,7 @@ from ast import parse
 from codecs import open
 from distutils.sysconfig import get_python_lib
 from functools import partial
-from os import listdir, path
+from os import path
 from sys import version_info
 
 from setuptools import find_packages, setup
@@ -84,7 +84,7 @@ def main():
             "Programming Language :: Python :: 3.10",
             "Programming Language :: Python :: Implementation",
             "Topic :: Software Development",
-        ]
+        ],
     )
 
 

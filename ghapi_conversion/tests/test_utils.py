@@ -4,10 +4,11 @@ Tests for utils
 """
 from codecs import open
 from collections import deque
-from os import mkdir, path, remove, rmdir, environ
+from itertools import chain
+from os import mkdir, path, remove, rmdir
 from sys import version_info
 from tempfile import gettempdir
-from unittest import TestCase, skip
+from unittest import TestCase
 
 from ghapi_conversion import utils
 from ghapi_conversion.tests.utils_for_tests import unittest_main
@@ -66,9 +67,10 @@ class TestUtils(TestCase):
             call_mock.call_args.append([args, kwargs])
             if args and args[0][:2] == ["git", "clone"]:
                 mkdir(args[0][-1])
-                created_dirs.append(path.dirname(args[0][-1]))
-                # open(args[0][-1], "a").close()
-                # created_files.append(args[0][-1])
+                created_dirs.append(args[0][-1])
+                req_file = path.join(args[0][-1], "<file>")
+                open(req_file, "a").close()
+                created_files.append(req_file)
 
         call_mock.call_count = 0
         call_mock.call_args = []
@@ -80,20 +82,42 @@ class TestUtils(TestCase):
         try:
             with open(temp_file, "w", encoding="utf8") as f:
                 f.writelines(
-                    "-r https://raw.githubusercontent.com/<org>/<repo1>/<branch>/<file>",
+                    "-r https://raw.githubusercontent.com/<org>/<repo1>/<branch>/<file>"
                 )
+
             with patch.object(utils, "call", call_mock):
                 utils.clone_install_pip(temp_file, clone_parent_dir=temp_dir)
 
         finally:
-            deque(map(remove, created_files), maxlen=0)
-            deque(map(rmdir, created_dirs), maxlen=0)
+            try:
+                with open(temp_file, "w", encoding="utf8") as f:
+                    f.writelines("mock")
+
+                with patch.object(utils, "call", call_mock):
+                    utils.clone_install_pip(temp_file, clone_parent_dir=temp_dir)
+
+                self.assertEqual(call_mock.call_count, 2)
+
+            finally:
+                deque(
+                    chain.from_iterable(
+                        (map(remove, created_files), map(rmdir, reversed(created_dirs)))
+                    ),
+                    maxlen=0,
+                )
 
         self.assertEqual(call_mock.call_count, 2)
-        self.assertListEqual(call_mock.call_args[0][0], ["pip", "install", "."])
-
         self.assertEqual(
-            call_mock.call_args[1]["cwd"], path.join(path.dirname(temp_dir), "<repo>")
+            call_mock.call_args[0][0][0],
+            [
+                "git",
+                "clone",
+                "--depth=1",
+                "-b",
+                "<branch>",
+                "https://github.com/<org>/<repo1>",
+                path.join(temp_dir, "<repo1>"),
+            ],
         )
 
 

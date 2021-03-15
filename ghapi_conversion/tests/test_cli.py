@@ -8,11 +8,11 @@ from sys import version_info
 from tempfile import gettempdir
 from unittest import TestCase
 
-from ghapi_conversion.__main__ import main
+from ghapi_conversion.__main__ import entrypoint, main
 from ghapi_conversion.tests.utils_for_tests import unittest_main
 
 if version_info[0] == 2:
-    from mock import patch
+    from mock import MagicMock, patch
 
     try:
         from cStringIO import StringIO
@@ -20,7 +20,7 @@ if version_info[0] == 2:
         from StringIO import StringIO
 else:
     from io import StringIO
-    from unittest.mock import patch
+    from unittest.mock import MagicMock, patch
 
 
 class TestCli(TestCase):
@@ -83,8 +83,6 @@ class TestCli(TestCase):
             :type pip_req_file: ```str```
             """
             clone_install_pip.called += 1
-            # if not path.isfile(pip_req_file):
-            #     directory = path.dirname(path.dirname(pip_req_file))
 
         clone_install_pip.called = 0
 
@@ -101,6 +99,17 @@ class TestCli(TestCase):
         finally:
             remove(temp_file)
             rmdir(temp_dir)
+
+    def test_main_called(self):
+        """
+        Tests whether the `main` is called when `__name__ == '__main__'`
+        """
+        main_mock = MagicMock()
+        with patch("ghapi_conversion.__main__.main", main_mock), patch(
+            "ghapi_conversion.__main__.__name__", "__main__"
+        ):
+            entrypoint()
+        self.assertEqual(main_mock.call_count, 1)
 
 
 unittest_main()

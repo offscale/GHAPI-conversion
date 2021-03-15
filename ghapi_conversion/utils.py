@@ -15,9 +15,8 @@ else:
 
 clone_parent_dir_default = environ.get("CLONE_PARENT_DIR", gettempdir())
 
-def up_clone(
-    url, branch="master", clone_parent_dir=clone_parent_dir_default
-):
+
+def up_clone(url, branch="master", clone_parent_dir=clone_parent_dir_default):
     """
     Clone if not present else reuse
 
@@ -76,7 +75,10 @@ def clone_install_pip(pip_req_file, clone_parent_dir=clone_parent_dir_default):
 
     for req in reqs:
         if req.startswith("http:") or req.startswith("https:"):
-            call(["pip", "install", "."], cwd=up_clone(req, clone_parent_dir=clone_parent_dir)[0])
+            call(
+                ["pip", "install", "."],
+                cwd=up_clone(req, clone_parent_dir=clone_parent_dir)[0],
+            )
         elif req.startswith("-r"):
             route = req[req.find("/", req.find(".")) :]
             offset, parts = 1, []
@@ -90,7 +92,8 @@ def clone_install_pip(pip_req_file, clone_parent_dir=clone_parent_dir_default):
                 path.join(
                     up_clone(
                         "https://github.com/{org}/{repo}".format(org=org, repo=repo),
-                        branch=branch, clone_parent_dir=clone_parent_dir
+                        branch=branch,
+                        clone_parent_dir=clone_parent_dir,
                     )[0],
                     filepath,
                 )

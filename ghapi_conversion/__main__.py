@@ -69,7 +69,14 @@ def main(cli_argv=None, return_args=False):
     deque(map(clone_install_pip, args.file), maxlen=0)
 
 
-if __name__ == "__main__":
-    main()
+def entrypoint():
+    """
+    Run entrypoint
+    """
+    if __name__ == "__main__":
+        main()
 
-__all__ = ["main"]
+
+entrypoint()
+
+__all__ = ["entrypoint", "main"]

@@ -5,5 +5,5 @@ Root __init__
 """
 
 __author__ = "Samuel Marks"
-__version__ = "0.0.2"
+__version__ = "0.0.3"
 __description__ = "CLI to replace HTTP GET on GitHub API with clones"

@@ -65,7 +65,7 @@ class TestCli(TestCase):
         try:
             main_resp = main(cli_argv=["-r", temp_file], return_args=True)
             self.assertIsInstance(main_resp, Namespace)
-            self.assertListEqual(main_resp.file, [temp_file])
+            self.assertTupleEqual(main_resp.file, (temp_file,))
         finally:
             remove(temp_file)
             rmdir(temp_dir)

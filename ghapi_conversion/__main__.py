@@ -59,6 +59,7 @@ def main(cli_argv=None, return_args=False):
     """
     _parser = _build_parser()
     args = _parser.parse_args(args=cli_argv)
+    args.file = tuple(map(str.rstrip, args.file))
     missing = tuple(filterfalse(rpartial(path.isfile), args.file))
     if missing:
         _parser.error("--requirement must be an existent file. Got: {}".format(missing))

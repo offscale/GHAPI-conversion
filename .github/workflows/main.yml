@@ -49,7 +49,7 @@ jobs:
                 if: matrix.python-version == '3.8' && matrix.os.name == 'Linux'
             -   name: Doc coverage
                 run: |
-                    pip install interrogate codecov coverage
+                    pip install interrogate
                     interrogate --generate-badge '.github/doccoverage.svg' -e '.eggs' -e '__pycache__' -e 'ghapi_conversion.egg-info' -e '.git'
                     sed -i 's/>interrogate</>doc coverage</g; s/.0%/%/g' .github/doccoverage.svg
                     grep -qF '100%' .github/doccoverage.svg && sed -i 's/370/300/g' .github/doccoverage.svg
@@ -68,6 +68,7 @@ jobs:
                 if: matrix.python-version == '3.8' && matrix.os.name == 'Linux'
             -   name: Test coverage
                 run: |
+                    pip install codecov coverage
                     coverage run -m unittest discover
                     bash <(curl -s https://codecov.io/bash)
                 env:

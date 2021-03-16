@@ -73,7 +73,7 @@ def clone_install_pip(pip_req_file, clone_parent_dir=clone_parent_dir_default):
     """
     with open(pip_req_file) as f:
         reqs = tuple(
-            chain.from_iterable(map(partial(str.splitlines, keepends=False), f))
+            chain.from_iterable(map(rpartial(str.splitlines, False), f))
         )
 
     for req in reqs:

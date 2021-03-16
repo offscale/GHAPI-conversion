@@ -108,4 +108,4 @@ def rpartial(func, *args):
     return lambda *a: func(*(a + args))
 
 
-__all__ = ["clone_install_pip", "rpartial"]
+__all__ = ["clone_install_pip", "rpartial", "up_clone"]

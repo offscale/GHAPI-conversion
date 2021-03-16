@@ -21,7 +21,7 @@ To overcome this issue, use this tool instead of `pip install -r`. This tool `cl
   - `https://api.github.com/repos/<org>/<repo>/zipball#egg=<package_name>`
   - `https://raw.githubusercontent.com/<org>/<repo>/<branch>/<file>`
 
-Additionally, it reuses already cloned repos. 
+Additionally, it reuses already cloned repos.
 
 ## Install package
 
@@ -44,7 +44,9 @@ Additionally, it reuses already cloned repos.
 
     $ python -m ghapi_conversion --help
     
-    usage: __main__.py [-h] [--version] -r FILE
+    usage: __main__.py [-h] [--version] (-r FILE | -l LINK)
+    
+    CLI to replace HTTP GET on GitHub API with clones
     
     optional arguments:
       -h, --help            show this help message and exit
@@ -52,6 +54,10 @@ Additionally, it reuses already cloned repos.
       -r FILE, --requirement FILE
                             Install from the given requirements file. This option
                             can be used multiple times.
+      -l LINK, --link LINK  Clone instead of HTTPS GET a
+                            `https://api.github.com/repos/<org>/<repo>/zipball` or
+                            `https://raw.githubusercontent.com/<org>/<repo>/<branch
+                            >` link.
 
 ## Alternatives
 

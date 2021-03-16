@@ -72,14 +72,7 @@ jobs:
                     bash <(curl -s https://codecov.io/bash)
                 env:
                     CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-                if: matrix.python-version == '3.8' && matrix.os.name == 'Linux'
-            -   name: Test coverage
-                run: |
-                    coverage run -m unittest discover
-                    bash <(curl -s https://codecov.io/bash)
-                env:
-                    CODECOV_TOKEN: ${{ secrets.CODECOV_TOKEN }}
-                if: matrix.python-version == '3.8' && matrix.os.name == 'Linux'
+                if: (matrix.python-version == '3.8' || matrix.python-version == '2.7') && matrix.os.name == 'Linux'
             -   name: PyPi release
                 run: |
                     pip install twine

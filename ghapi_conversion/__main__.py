@@ -10,7 +10,7 @@ from os import path
 from sys import version_info
 
 from ghapi_conversion import __description__, __version__
-from ghapi_conversion.utils import clone_install_pip, rpartial
+from ghapi_conversion.utils import clone_install_pip, rpartial, up_clone
 
 if version_info[0] == 2:
     from itertools import ifilterfalse as filterfalse
@@ -30,15 +30,27 @@ def _build_parser():
         "--version", action="version", version="%(prog)s {}".format(__version__)
     )
 
-    parser.add_argument(
+    group = parser.add_mutually_exclusive_group(required=True)
+
+    group.add_argument(
         "-r",
         "--requirement",
         help="Install from the given requirements file."
         " This option can be used multiple times.",
-        required=True,
         type=str,
         action="append",
         dest="file",
+    )
+
+    group.add_argument(
+        "-l",
+        "--link",
+        help="Clone instead of HTTPS GET a"
+        " `https://api.github.com/repos/<org>/<repo>/zipball` or"
+        " `https://raw.githubusercontent.com/<org>/<repo>/<branch>` link.",
+        type=str,
+        action="append",
+        dest="link",
     )
 
     return parser
@@ -59,19 +71,29 @@ def main(cli_argv=None, return_args=False):
     """
     _parser = _build_parser()
     args = _parser.parse_args(args=cli_argv)
-    missing = tuple(filterfalse(rpartial(path.isfile), args.file))
-    if missing:
-        _parser.error("--requirement must be an existent file. Got: {}".format(missing))
+    if args.file is not None:
+        missing = tuple(filterfalse(rpartial(path.isfile), args.file))
+        if missing:
+            _parser.error(
+                "--requirement must be an existent file. Got: {}".format(missing)
+            )
 
     if return_args:
         return args
 
-    deque(map(clone_install_pip, args.file), maxlen=0)
+    deque(
+        map(
+            *(up_clone, args.link)
+            if args.file is None
+            else (clone_install_pip, args.file)
+        ),
+        maxlen=0,
+    )
 
 
 def entrypoint():
     """
-    Run entrypoint
+    Run entrypoint when `__name__` is `"__main__"`
     """
     if __name__ == "__main__":
         main()

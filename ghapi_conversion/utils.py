@@ -2,6 +2,7 @@
 """
 Utility functions
 """
+from functools import partial
 from itertools import chain
 from os import environ, path
 from subprocess import call
@@ -71,7 +72,9 @@ def clone_install_pip(pip_req_file, clone_parent_dir=clone_parent_dir_default):
     :type clone_parent_dir: ```str```
     """
     with open(pip_req_file) as f:
-        reqs = f.readlines()
+        reqs = tuple(
+            chain.from_iterable(map(partial(str.splitlines, keepends=False), f))
+        )
 
     for req in reqs:
         if req.startswith("http:") or req.startswith("https:"):

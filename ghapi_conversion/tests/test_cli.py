@@ -12,12 +12,12 @@ from ghapi_conversion.__main__ import entrypoint, main
 from ghapi_conversion.tests.utils_for_tests import unittest_main
 
 if version_info[0] == 2:
+    # try:
+    from cStringIO import StringIO
     from mock import MagicMock, patch
 
-    try:
-        from cStringIO import StringIO
-    except ImportError:
-        from StringIO import StringIO
+    # except ImportError:
+    # from StringIO import StringIO
 else:
     from io import StringIO
     from unittest.mock import MagicMock, patch

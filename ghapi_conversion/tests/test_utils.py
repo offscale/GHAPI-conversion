@@ -38,8 +38,8 @@ class TestUtils(TestCase):
             with open(temp_file, "w", encoding="utf8") as f:
                 f.writelines(
                     (
-                        "https://api.github.com/repos/<org>/<repo>/zipball#egg=<package_name>",
-                        "-r https://raw.githubusercontent.com/<org>/<repo0>/<branch>/<file>",
+                        "https://api.github.com/repos/{org}/{repo}/zipball#egg={package_name}",
+                        "-r https://raw.githubusercontent.com/{org}/{repo0}/{branch}/{file}",
                     )
                 )
             with patch.object(utils, "call", call_mock):
@@ -52,7 +52,7 @@ class TestUtils(TestCase):
         self.assertEqual(call_mock.call_count, 2)
         self.assertListEqual(call_mock.call_args[0][0], ["pip", "install", "."])
         self.assertEqual(
-            call_mock.call_args[1]["cwd"], path.join(path.dirname(temp_dir), "<repo>")
+            call_mock.call_args[1]["cwd"], path.join(path.dirname(temp_dir), "{repo}")
         )
 
     def test_clone_install_req(self):
@@ -68,7 +68,7 @@ class TestUtils(TestCase):
             if args and args[0][:2] == ["git", "clone"]:
                 mkdir(args[0][-1])
                 created_dirs.append(args[0][-1])
-                req_file = path.join(args[0][-1], "<file>")
+                req_file = path.join(args[0][-1], "{file}")
                 open(req_file, "a").close()
                 created_files.append(req_file)
 
@@ -82,7 +82,7 @@ class TestUtils(TestCase):
         try:
             with open(temp_file, "w", encoding="utf8") as f:
                 f.writelines(
-                    "-r https://raw.githubusercontent.com/<org>/<repo1>/<branch>/<file>"
+                    "-r https://raw.githubusercontent.com/{org}/{repo}/{branch}/{file}"
                 )
 
             with patch.object(utils, "call", call_mock):
@@ -114,9 +114,9 @@ class TestUtils(TestCase):
                 "clone",
                 "--depth=1",
                 "-b",
-                "<branch>",
-                "https://github.com/<org>/<repo1>",
-                path.join(temp_dir, "<repo1>"),
+                "{branch}",
+                "https://github.com/{org}/{repo}",
+                path.join(temp_dir, "{repo}"),
             ],
         )
 

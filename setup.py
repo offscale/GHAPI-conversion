@@ -41,16 +41,28 @@ def to_funcs(*paths):
 
 
 def main():
-    """ Main function for setup.py; this actually does the installation """
+    """Main function for setup.py; this actually does the installation"""
     with open(
         path.join(path.abspath(path.dirname(__file__)), package_name, "__init__.py")
     ) as f:
         __author__, __version__ = map(
-            lambda buf: next(map(lambda e: e.value.s, parse(buf).body)),
-            filter(
-                lambda line: line.startswith("__version__")
-                or line.startswith("__author__"),
-                f,
+            lambda const: const.value if version_info > (3, 6) else const.s,
+            map(
+                attrgetter("value"),
+                map(
+                    itemgetter(0),
+                    map(
+                        attrgetter("body"),
+                        map(
+                            parse,
+                            filter(
+                                lambda line: line.startswith("__version__")
+                                or line.startswith("__author__"),
+                                f,
+                            ),
+                        ),
+                    ),
+                ),
             ),
         )
 
@@ -89,7 +101,7 @@ def main():
 
 
 def setup_py_main():
-    """ Calls main if `__name__ == '__main__'` """
+    """Calls main if `__name__ == '__main__'`"""
     if __name__ == "__main__":
         main()
 

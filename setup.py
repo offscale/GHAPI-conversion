@@ -46,7 +46,7 @@ def main():
         path.join(path.abspath(path.dirname(__file__)), package_name, "__init__.py")
     ) as f:
         __author__, __version__ = map(
-            lambda const: const.value if version_info > (3, 6) else const.s,
+            lambda const: const.value if hasattr(const, "value") else const.s,
             map(
                 attrgetter("value"),
                 map(
